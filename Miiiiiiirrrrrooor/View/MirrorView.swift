@@ -220,7 +220,7 @@ struct MirrorView: View {
                                 .padding(.trailing, unit)
                         })
                     } else {
-                        Text("Mail: \(mail)")
+                        Text("\(mail)")
                             .frame(maxWidth: maxWidth, alignment: .trailing)
                             .padding(.trailing, unit)
                     }
@@ -231,7 +231,6 @@ struct MirrorView: View {
                     .multilineTextAlignment(.trailing)
                     .padding(.trailing, unit)
                     .padding(.top, unit)
-                
                 Button(action: {
                     let web = "https://www.flaticon.com/"
                     openUrl(to: web)
@@ -258,17 +257,44 @@ struct MirrorView: View {
                 .frame(width: uiTheme.sizeUnit, height: uiTheme.sizeUnit * 5)
                 
             VStack {
-                Text("x\(textTheme.numberToString(viewModel.zoomRange.lowerBound))")
-                    .foregroundStyle(textTheme.textColor)
-                    .frame(width: uiTheme.sizeUnit, height: uiTheme.sizeUnit)
+                Button(action: {
+                    viewModel.zoomRate = viewModel.zoomRange.upperBound
+                }, label: {
+                    Text("x\(textTheme.numberToString(viewModel.zoomRange.upperBound))")
+                        .foregroundStyle(textTheme.textColor)
+                        .frame(width: uiTheme.sizeUnit, height: uiTheme.sizeUnit)
+                        .background(
+                            RoundedRectangle(cornerRadius: uiTheme.cornerRadius)
+                                .foregroundStyle(uiTheme.mainColor.opacity(uiTheme.imageButtonOpacity * 0.5))
+                                .padding(.horizontal, -10)
+                        )
+                })
                 Spacer()
-                Text("x\(textTheme.numberToString(viewModel.zoomRange.middleBound))")
-                    .foregroundStyle(textTheme.textColor)
-                    .frame(width: uiTheme.sizeUnit, height: uiTheme.sizeUnit)
+                Button(action: {
+                    viewModel.zoomRate = viewModel.zoomRange.middleBound
+                }, label: {
+                    Text("x\(textTheme.numberToString(viewModel.zoomRange.middleBound))")
+                        .foregroundStyle(textTheme.textColor)
+                        .frame(width: uiTheme.sizeUnit, height: uiTheme.sizeUnit)
+                        .background(
+                            RoundedRectangle(cornerRadius: uiTheme.cornerRadius)
+                                .foregroundStyle(uiTheme.mainColor.opacity(uiTheme.imageButtonOpacity * 0.5))
+                                .padding(.horizontal, -10)
+                        )
+                })
                 Spacer()
-                Text("x\(textTheme.numberToString(viewModel.zoomRange.upperBound))")
-                    .foregroundStyle(textTheme.textColor)
-                    .frame(width: uiTheme.sizeUnit, height: uiTheme.sizeUnit)
+                Button(action: {
+                    viewModel.zoomRate = viewModel.zoomRange.lowerBound
+                }, label: {
+                    Text("x\(textTheme.numberToString(viewModel.zoomRange.lowerBound))")
+                        .foregroundStyle(textTheme.textColor)
+                        .frame(width: uiTheme.sizeUnit, height: uiTheme.sizeUnit)
+                        .background(
+                            RoundedRectangle(cornerRadius: uiTheme.cornerRadius)
+                                .foregroundStyle(uiTheme.mainColor.opacity(uiTheme.imageButtonOpacity * 0.5))
+                                .padding(.horizontal, -10)
+                        )
+                })
             }
             .frame(height: uiTheme.sizeUnit * 5)
         }
@@ -299,6 +325,7 @@ struct MirrorView: View {
         
         toastTimer = Timer.scheduledTimer(withTimeInterval: duration, repeats: false) { timer in
             toastOpacity = 0
+            toastText = ""
             self.toastTimer = nil
         }
     }
@@ -311,7 +338,12 @@ struct MirrorView: View {
 }
 
 #Preview {
-    MirrorView()
+    let uiTheme = UITheme.WhitePreviewSetting
+    let textTheme = TextTheme.WhitePreviewSetting
+    
+    return MirrorView()
+        .environmentObject(uiTheme)
+        .environmentObject(textTheme)
 }
 
 

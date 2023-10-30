@@ -13,7 +13,7 @@ class MirrorViewModel: ObservableObject {
     @Published var currentPreviewQuality: AVCaptureSession.Preset = .high
     
     @Published var zoomRange: ClosedRange<CGFloat> = 1...3
-    @Published var zoomRate: CGFloat = 1    
+    @Published var zoomRate: CGFloat = 1
     func toggleQuality() {
         if currentPreviewQuality == .high {
             currentPreviewQuality = .low

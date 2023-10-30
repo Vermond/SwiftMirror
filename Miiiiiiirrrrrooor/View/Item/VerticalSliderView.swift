@@ -10,7 +10,11 @@
 import SwiftUI
 
 struct VerticalSliderView: View {
+    enum Direction { case toUp; case toBottom }
+    
     @Binding var value: CGFloat
+    
+    @State var direction = Direction.toUp
     
     @State var valueRange: ClosedRange<CGFloat>
     @State var lastCoordinateValue: CGFloat = 0.0
@@ -28,7 +32,10 @@ struct VerticalSliderView: View {
             let maxY = size.height * 0.98 - thumbSize
             
             let scaleFactor = (maxY - minY) / (valueRange.upperBound - valueRange.lowerBound)
-            let sliderValue = (self.value - valueRange.lowerBound) * scaleFactor + minY
+            let sliderValue = isDown ? (self.value - valueRange.lowerBound) * scaleFactor + minY : -((self.value - valueRange.lowerBound) * scaleFactor + minY)
+            
+            let topSpaceHeight: CGFloat = isDown ? 0 : .infinity
+            let bottomSpaceHeight: CGFloat = isDown ? .infinity : 0
             
             ZStack {
                 RoundedRectangle(cornerRadius: radius)
@@ -36,6 +43,9 @@ struct VerticalSliderView: View {
                     .frame(width: radius * 0.5)
                     .padding(.vertical, radius * 0.5)
                 VStack {
+                    Spacer()
+                        .frame(maxHeight: topSpaceHeight)
+                    
                     Circle()
                         .stroke()
                         .foregroundStyle(Color.white)
@@ -53,20 +63,40 @@ struct VerticalSliderView: View {
                                         self.lastCoordinateValue = sliderValue
                                     }
                                     
+                                    var nextCoordinateValue: CGFloat = 0
+                                    
                                     if v.translation.height > 0 {
-                                        let nextCoordinateValue = min(maxY, self.lastCoordinateValue + v.translation.height)
-                                        self.value = ((nextCoordinateValue - minY) / scaleFactor)  + valueRange.lowerBound
+                                        // drag to down
+                                        nextCoordinateValue = isDown ? min(maxY, self.lastCoordinateValue + v.translation.height) : max(minY, -(self.lastCoordinateValue + v.translation.height))
                                     } else {
-                                        let nextCoordinateValue = max(minY, self.lastCoordinateValue + v.translation.height)
-                                        self.value = ((nextCoordinateValue - minY) / scaleFactor) + valueRange.lowerBound
+                                        // drag to up
+                                        nextCoordinateValue = isDown ? max(minY, self.lastCoordinateValue + v.translation.height) : min(maxY, -(self.lastCoordinateValue + v.translation.height))
                                     }
+                                    
+                                    self.value = (nextCoordinateValue - minY) / scaleFactor + valueRange.lowerBound
                                 }
-                            
                         )
+                    
                     Spacer()
+                        .frame(maxHeight: bottomSpaceHeight)
                 }
                 
             }
         }
     }
+    
+    private var isDown: Bool { direction == .toBottom }
+}
+
+
+#Preview {
+    @State var valueRange: ClosedRange<CGFloat> = 10...30
+    @State var value: CGFloat = 25
+    
+    var view: any View {
+        VerticalSliderView(value: $value, valueRange: valueRange)
+            .frame(width: 36, height: 180)
+    }
+    
+    return view
 }
