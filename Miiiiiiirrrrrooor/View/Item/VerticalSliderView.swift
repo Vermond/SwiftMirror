@@ -10,11 +10,11 @@
 import SwiftUI
 
 struct VerticalSliderView: View {
-    enum Direction { case toUp; case toBottom }
+    enum Direction { case toTop; case toBottom }
     
     @Binding var value: CGFloat
     
-    @State var direction = Direction.toUp
+    @State var direction = Direction.toTop
     
     @State var valueRange: ClosedRange<CGFloat>
     @State var lastCoordinateValue: CGFloat = 0.0
@@ -42,6 +42,7 @@ struct VerticalSliderView: View {
                     .foregroundStyle(sliderLineColor)
                     .frame(width: radius * 0.5)
                     .padding(.vertical, radius * 0.5)
+                
                 VStack {
                     Spacer()
                         .frame(maxHeight: topSpaceHeight)
@@ -80,7 +81,6 @@ struct VerticalSliderView: View {
                     Spacer()
                         .frame(maxHeight: bottomSpaceHeight)
                 }
-                
             }
         }
     }

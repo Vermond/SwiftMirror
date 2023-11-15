@@ -28,29 +28,5 @@ class UITheme: ObservableObject  {
         self.imageButtonOpacity = imageButtonOpacity
     }
     
-    var mainImageButtonBackground: Color {
-        mainColor.opacity(imageButtonOpacity)
-    }
-    
-    static var DarkPreviewSetting: UITheme {
-        let size: CGFloat = 32
-        
-        return UITheme(sizeUnit: size,
-                       paddingUnit: size * 0.5,
-                       cornerRadius: 10,
-                       mainColor: .white,
-                       imageButtonOpacity: 0.5
-        )
-    }
-    
-    static var WhitePreviewSetting: UITheme {
-        let size: CGFloat = 32
-        
-        return UITheme(sizeUnit: size,
-                       paddingUnit: size * 0.5,
-                       cornerRadius: 10,
-                       mainColor: .black,
-                       imageButtonOpacity: 0.5
-        )
-    }
+    var mainImageButtonBackground: Color { mainColor.opacity(imageButtonOpacity) }
 }

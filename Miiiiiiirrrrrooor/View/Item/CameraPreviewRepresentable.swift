@@ -176,7 +176,7 @@ class CameraPreviewController: UIViewController {
     private func setupPreviewLayer() {
         self.previewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
         self.previewLayer?.videoGravity = .resizeAspectFill
-        self.previewLayer?.connection?.videoOrientation = .portrait //videoOrientation will be deprecated -> videoRotationAngle
+        self.previewLayer?.connection?.videoOrientation = .portrait //videoOrientation will be deprecated -> usind videoRotationAngle is recommanded
         self.previewLayer?.frame = self.view.layer.bounds
         self.view.layer.insertSublayer(previewLayer!, at: 0)
     }

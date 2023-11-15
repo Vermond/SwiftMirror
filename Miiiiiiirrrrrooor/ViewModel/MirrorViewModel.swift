@@ -14,17 +14,4 @@ class MirrorViewModel: ObservableObject {
     
     @Published var zoomRange: ClosedRange<CGFloat> = 1...3
     @Published var zoomRate: CGFloat = 1
-    func toggleQuality() {
-        if currentPreviewQuality == .high {
-            currentPreviewQuality = .low
-        } else {
-            currentPreviewQuality = .high
-        }
-    }
-}
-
-extension ClosedRange<CGFloat> {
-    var middleBound: CGFloat {
-        (self.upperBound - self.lowerBound) / 2 + self.lowerBound
-    }
 }

@@ -75,7 +75,7 @@ struct MirrorView: View {
                                                isWaitingForCapture: $isWaitingForCapture,
                                                photoImage: $photoImage)
                 }
-                .ignoresSafeArea()
+                    .ignoresSafeArea()
             )
             .sheet(isPresented: $isShowingMailView) {
                 MailView(isShowing: self.$isShowingMailView,
@@ -83,6 +83,7 @@ struct MirrorView: View {
                          targetMail: mail)
             }
             .onAppear {
+                //init theme
                 let size = geometryReader.size.width / 10
                 let isDark = colorScheme == .dark
                 
@@ -108,8 +109,10 @@ struct MirrorView: View {
             }
         }
     }
-    
-    //MARK: - Main Button View Item
+}
+ 
+//MARK: - Main Button View Item
+extension MirrorView {
     private var infoButton: some View {
         Button(action: {
             isInfoHidden.toggle()
@@ -165,7 +168,7 @@ struct MirrorView: View {
     
     private var qualityButton: some View {
         Button(action: {
-            viewModel.toggleQuality()
+            viewModel.currentPreviewQuality.toggle()
             isWaitingForChangeQuality = true
             
             let newQuality = viewModel.currentPreviewQuality == .high ? "high" : "low"
@@ -188,8 +191,10 @@ struct MirrorView: View {
                 )
         )
     }
+}
     
-    //MARK: - Main Sub View Item
+//MARK: - Main Sub View Item
+extension MirrorView {
     private var infoView: some View {
         GeometryReader { gr in
             let maxWidth = gr.size.width * 0.4
@@ -211,20 +216,20 @@ struct MirrorView: View {
                     .padding(.trailing, unit)
                     .padding(.top, unit)
                 
-                    if MFMailComposeViewController.canSendMail() {
-                        Button(action: {
-                            self.isShowingMailView.toggle()
-                        }, label: {
-                            Text("Mail to me")
-                                .frame(maxWidth: maxWidth, alignment: .trailing)
-                                .padding(.trailing, unit)
-                        })
-                    } else {
-                        Text("\(mail)")
+                if MFMailComposeViewController.canSendMail() {
+                    Button(action: {
+                        self.isShowingMailView.toggle()
+                    }, label: {
+                        Text("Mail to me")
                             .frame(maxWidth: maxWidth, alignment: .trailing)
                             .padding(.trailing, unit)
-                    }
-            
+                    })
+                } else {
+                    Text("\(mail)")
+                        .frame(maxWidth: maxWidth, alignment: .trailing)
+                        .padding(.trailing, unit)
+                }
+                
                 Text("⌾ Icon by Freepik\nfrom Flaticon")
                     .frame(maxWidth: maxWidth, alignment: .trailing)
                     .foregroundStyle(textTheme.textColor)
@@ -255,7 +260,7 @@ struct MirrorView: View {
         HStack {
             VerticalSliderView(value: $viewModel.zoomRate, valueRange: viewModel.zoomRange)
                 .frame(width: uiTheme.sizeUnit, height: uiTheme.sizeUnit * 5)
-                
+            
             VStack {
                 Button(action: {
                     viewModel.zoomRate = viewModel.zoomRange.upperBound
@@ -312,8 +317,10 @@ struct MirrorView: View {
             )
             .frame(maxWidth: .infinity)
     }
+}
     
-    //MARK: - Functions
+//MARK: - Functions
+extension MirrorView {
     private func showToast(_ text: String, duration: TimeInterval) {
         toastText = text
         toastOpacity = 1
@@ -338,17 +345,10 @@ struct MirrorView: View {
 }
 
 #Preview {
-    let uiTheme = UITheme.WhitePreviewSetting
-    let textTheme = TextTheme.WhitePreviewSetting
+    let uiTheme = ThemePreview.WhitePreview.uiTheme
+    let textTheme = ThemePreview.WhitePreview.textTheme
     
     return MirrorView()
         .environmentObject(uiTheme)
         .environmentObject(textTheme)
-}
-
-
-fileprivate extension Bool {
-    mutating func toggle() {
-        self = !self
-    }
 }

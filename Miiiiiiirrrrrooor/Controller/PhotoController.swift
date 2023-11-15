@@ -39,6 +39,4 @@ class PhotoController: NSObject {
             onComplete = nil
         }
     }
-    
-    
 }

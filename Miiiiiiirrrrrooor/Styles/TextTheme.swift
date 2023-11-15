@@ -31,32 +31,4 @@ class TextTheme: ObservableObject {
     func numberToString(_ value: CGFloat) -> String {
         return numberFormatter.string(from: NSNumber(value: value)) ?? ""
     }
-    
-    static var DarkPreviewSetting: TextTheme {
-        let formatter = NumberFormatter()
-        formatter.numberStyle = .decimal
-        formatter.minimumFractionDigits = 1
-        formatter.maximumFractionDigits = 1
-        
-        return TextTheme(textScaleRate: 1,
-                         textColor: .white,
-                         numberFormatter: formatter,
-                         textButtonOpacity: 0.1,
-                         textAreaOpacity: 0.25
-        )
-    }
-    
-    static var WhitePreviewSetting: TextTheme {
-        let formatter = NumberFormatter()
-        formatter.numberStyle = .decimal
-        formatter.minimumFractionDigits = 1
-        formatter.maximumFractionDigits = 1
-        
-        return TextTheme(textScaleRate: 1,
-                         textColor: .black,
-                         numberFormatter: formatter,
-                         textButtonOpacity: 0.1,
-                         textAreaOpacity: 0.1
-        )
-    }
 }

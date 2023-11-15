@@ -111,8 +111,8 @@ struct PhotoConfirmView: View {
 }
 
 #Preview {
-    let uiTheme = UITheme.DarkPreviewSetting
-    let textTheme = TextTheme.DarkPreviewSetting
+    let uiTheme = ThemePreview.WhitePreview.uiTheme
+    let textTheme = ThemePreview.WhitePreview.textTheme
     
     @State var previewImage: UIImage? = UIImage()
     

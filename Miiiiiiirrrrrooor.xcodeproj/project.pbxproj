@@ -18,6 +18,10 @@
 		74972C0F2ACFBC7B0012908A /* UITheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74972C0E2ACFBC7B0012908A /* UITheme.swift */; };
 		74C07A802AB976F100FC3F4F /* MirrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74C07A7F2AB976F100FC3F4F /* MirrorView.swift */; };
 		74C07A862AB9854700FC3F4F /* MirrorViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74C07A852AB9854700FC3F4F /* MirrorViewModel.swift */; };
+		74DBDCFC2B044BEC00BF4184 /* ClosedRange+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74DBDCFB2B044BEC00BF4184 /* ClosedRange+Extension.swift */; };
+		74DBDCFE2B044C2B00BF4184 /* ThemePreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74DBDCFD2B044C2A00BF4184 /* ThemePreview.swift */; };
+		74DBDD002B047AD900BF4184 /* AVCaptureSessionPreset+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74DBDCFF2B047AD900BF4184 /* AVCaptureSessionPreset+Extension.swift */; };
+		74DBDD022B047B7100BF4184 /* Bool+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74DBDD012B047B7100BF4184 /* Bool+Extension.swift */; };
 		ED3B431B2AE80C9C00810132 /* MailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED3B431A2AE80C9C00810132 /* MailView.swift */; };
 		ED3B431E2AE8121E00810132 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = ED3B431C2AE8121E00810132 /* README.md */; };
 		ED3B431F2AE8121E00810132 /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = ED3B431D2AE8121E00810132 /* LICENSE */; };
@@ -37,6 +41,10 @@
 		74972C0E2ACFBC7B0012908A /* UITheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITheme.swift; sourceTree = "<group>"; };
 		74C07A7F2AB976F100FC3F4F /* MirrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MirrorView.swift; sourceTree = "<group>"; };
 		74C07A852AB9854700FC3F4F /* MirrorViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MirrorViewModel.swift; sourceTree = "<group>"; };
+		74DBDCFB2B044BEC00BF4184 /* ClosedRange+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ClosedRange+Extension.swift"; sourceTree = "<group>"; };
+		74DBDCFD2B044C2A00BF4184 /* ThemePreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemePreview.swift; sourceTree = "<group>"; };
+		74DBDCFF2B047AD900BF4184 /* AVCaptureSessionPreset+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AVCaptureSessionPreset+Extension.swift"; sourceTree = "<group>"; };
+		74DBDD012B047B7100BF4184 /* Bool+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Bool+Extension.swift"; sourceTree = "<group>"; };
 		ED3B431A2AE80C9C00810132 /* MailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailView.swift; sourceTree = "<group>"; };
 		ED3B431C2AE8121E00810132 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = SOURCE_ROOT; };
 		ED3B431D2AE8121E00810132 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = SOURCE_ROOT; };
@@ -94,6 +102,7 @@
 			isa = PBXGroup;
 			children = (
 				ED3B43202AE8146800810132 /* Localization */,
+				74DBDCFA2B044BD900BF4184 /* Extension */,
 				74972C0D2ACFBC670012908A /* Styles */,
 				74190DE32ACEAD4C00D8C735 /* Controller */,
 				74C07A832AB9850B00FC3F4F /* View */,
@@ -118,6 +127,7 @@
 			children = (
 				74972C0E2ACFBC7B0012908A /* UITheme.swift */,
 				741811482AEF89F500A0E483 /* TextTheme.swift */,
+				74DBDCFD2B044C2A00BF4184 /* ThemePreview.swift */,
 			);
 			path = Styles;
 			sourceTree = "<group>";
@@ -138,6 +148,16 @@
 				74C07A852AB9854700FC3F4F /* MirrorViewModel.swift */,
 			);
 			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		74DBDCFA2B044BD900BF4184 /* Extension */ = {
+			isa = PBXGroup;
+			children = (
+				74DBDCFB2B044BEC00BF4184 /* ClosedRange+Extension.swift */,
+				74DBDCFF2B047AD900BF4184 /* AVCaptureSessionPreset+Extension.swift */,
+				74DBDD012B047B7100BF4184 /* Bool+Extension.swift */,
+			);
+			path = Extension;
 			sourceTree = "<group>";
 		};
 		ED3B43202AE8146800810132 /* Localization */ = {
@@ -224,10 +244,14 @@
 			files = (
 				74972C0F2ACFBC7B0012908A /* UITheme.swift in Sources */,
 				74C07A802AB976F100FC3F4F /* MirrorView.swift in Sources */,
+				74DBDD002B047AD900BF4184 /* AVCaptureSessionPreset+Extension.swift in Sources */,
+				74DBDCFC2B044BEC00BF4184 /* ClosedRange+Extension.swift in Sources */,
 				741811492AEF89F500A0E483 /* TextTheme.swift in Sources */,
 				7400466F2ABD2928004A2ABE /* CameraPreviewRepresentable.swift in Sources */,
 				74190DE22ACEA6B500D8C735 /* PhotoConfirmView.swift in Sources */,
+				74DBDCFE2B044C2B00BF4184 /* ThemePreview.swift in Sources */,
 				74190DE52ACEADA900D8C735 /* PhotoController.swift in Sources */,
+				74DBDD022B047B7100BF4184 /* Bool+Extension.swift in Sources */,
 				740046712ABD61A7004A2ABE /* VerticalSliderView.swift in Sources */,
 				74733DA42AB93D5A0058F0A9 /* MiiiiiiirrrrrooorApp.swift in Sources */,
 				ED3B431B2AE80C9C00810132 /* MailView.swift in Sources */,
