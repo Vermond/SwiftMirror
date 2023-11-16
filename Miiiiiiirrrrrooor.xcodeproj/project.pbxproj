@@ -62,14 +62,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		7400466D2ABD290D004A2ABE /* Item */ = {
+		7400466D2ABD290D004A2ABE /* Common */ = {
 			isa = PBXGroup;
 			children = (
 				7400466E2ABD2928004A2ABE /* CameraPreviewRepresentable.swift */,
 				740046702ABD61A7004A2ABE /* VerticalSliderView.swift */,
 				ED3B431A2AE80C9C00810132 /* MailView.swift */,
 			);
-			path = Item;
+			path = Common;
 			sourceTree = "<group>";
 		};
 		74190DE32ACEAD4C00D8C735 /* Controller */ = {
@@ -106,7 +106,6 @@
 				74972C0D2ACFBC670012908A /* Styles */,
 				74190DE32ACEAD4C00D8C735 /* Controller */,
 				74C07A832AB9850B00FC3F4F /* View */,
-				74C07A842AB9853500FC3F4F /* ViewModel */,
 				74733DA32AB93D5A0058F0A9 /* MiiiiiiirrrrrooorApp.swift */,
 				74733DA72AB93D5B0058F0A9 /* Assets.xcassets */,
 				74733DA92AB93D5B0058F0A9 /* Preview Content */,
@@ -135,19 +134,11 @@
 		74C07A832AB9850B00FC3F4F /* View */ = {
 			isa = PBXGroup;
 			children = (
-				7400466D2ABD290D004A2ABE /* Item */,
-				74C07A7F2AB976F100FC3F4F /* MirrorView.swift */,
-				74190DE12ACEA6B500D8C735 /* PhotoConfirmView.swift */,
+				74DBDD092B05A4AD00BF4184 /* Mirror */,
+				74DBDD0A2B05A4C200BF4184 /* PhotoConfirm */,
+				7400466D2ABD290D004A2ABE /* Common */,
 			);
 			path = View;
-			sourceTree = "<group>";
-		};
-		74C07A842AB9853500FC3F4F /* ViewModel */ = {
-			isa = PBXGroup;
-			children = (
-				74C07A852AB9854700FC3F4F /* MirrorViewModel.swift */,
-			);
-			path = ViewModel;
 			sourceTree = "<group>";
 		};
 		74DBDCFA2B044BD900BF4184 /* Extension */ = {
@@ -158,6 +149,23 @@
 				74DBDD012B047B7100BF4184 /* Bool+Extension.swift */,
 			);
 			path = Extension;
+			sourceTree = "<group>";
+		};
+		74DBDD092B05A4AD00BF4184 /* Mirror */ = {
+			isa = PBXGroup;
+			children = (
+				74C07A7F2AB976F100FC3F4F /* MirrorView.swift */,
+				74C07A852AB9854700FC3F4F /* MirrorViewModel.swift */,
+			);
+			path = Mirror;
+			sourceTree = "<group>";
+		};
+		74DBDD0A2B05A4C200BF4184 /* PhotoConfirm */ = {
+			isa = PBXGroup;
+			children = (
+				74190DE12ACEA6B500D8C735 /* PhotoConfirmView.swift */,
+			);
+			path = PhotoConfirm;
 			sourceTree = "<group>";
 		};
 		ED3B43202AE8146800810132 /* Localization */ = {
