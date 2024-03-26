@@ -28,10 +28,10 @@ class PhotoController: NSObject {
     }
     
     @objc private func saveComplete(_ image: UIImage, didFinishSavingWithError error: Error?, contextInfo: UnsafeRawPointer) {
-        if let error {
-            print(error)
+        if error != nil {
+            // error
         } else {
-            print("save finished")
+            // finish
         }
         
         if onComplete != nil {

@@ -16,11 +16,13 @@ struct VerticalSliderView: View {
     
     @State var direction = Direction.toTop
     
-    @State var valueRange: ClosedRange<CGFloat>
-    @State var lastCoordinateValue: CGFloat = 0.0
+    @State private(set) var valueRange: ClosedRange<CGFloat>
+    @State private(set) var lastCoordinateValue: CGFloat = 0.0
     
     @State var sliderLineColor: Color = .gray
     @State var sliderButtonColor: Color = .black
+    
+    private var isDown: Bool { direction == .toBottom }
     
     var body: some View {
         GeometryReader { geometryReader in
@@ -31,11 +33,11 @@ struct VerticalSliderView: View {
             let minY = size.height * 0.015
             let maxY = size.height * 0.98 - thumbSize
             
-            let scaleFactor = (maxY - minY) / (valueRange.upperBound - valueRange.lowerBound)
-            let sliderValue = isDown ? (self.value - valueRange.lowerBound) * scaleFactor + minY : -((self.value - valueRange.lowerBound) * scaleFactor + minY)
-            
             let topSpaceHeight: CGFloat = isDown ? 0 : .infinity
             let bottomSpaceHeight: CGFloat = isDown ? .infinity : 0
+            
+            let scaleFactor = getScaleFactor(minY: minY, maxY: maxY)
+            let sliderValue = getSliderValue(value: self.value, scaleFactor: scaleFactor, isDown: isDown, minY: minY, maxY: maxY)
             
             ZStack {
                 RoundedRectangle(cornerRadius: radius)
@@ -60,21 +62,7 @@ struct VerticalSliderView: View {
                         .gesture(
                             DragGesture(minimumDistance: 0)
                                 .onChanged { v in
-                                    if (abs(v.translation.height) < 0.1) {
-                                        self.lastCoordinateValue = sliderValue
-                                    }
-                                    
-                                    var nextCoordinateValue: CGFloat = 0
-                                    
-                                    if v.translation.height > 0 {
-                                        // drag to down
-                                        nextCoordinateValue = isDown ? min(maxY, self.lastCoordinateValue + v.translation.height) : max(minY, -(self.lastCoordinateValue + v.translation.height))
-                                    } else {
-                                        // drag to up
-                                        nextCoordinateValue = isDown ? max(minY, self.lastCoordinateValue + v.translation.height) : min(maxY, -(self.lastCoordinateValue + v.translation.height))
-                                    }
-                                    
-                                    self.value = (nextCoordinateValue - minY) / scaleFactor + valueRange.lowerBound
+                                    updateZoomFactor(sliderValue: sliderValue, dragValue: v, minY: minY, maxY: maxY, scaleFactor: scaleFactor)
                                 }
                         )
                     
@@ -85,9 +73,51 @@ struct VerticalSliderView: View {
         }
     }
     
-    private var isDown: Bool { direction == .toBottom }
 }
 
+//#MARK: - Parameter Functions
+extension VerticalSliderView {
+    public func getSliderValue(value: CGFloat, scaleFactor:CGFloat, isDown: Bool, minY: CGFloat, maxY: CGFloat) -> CGFloat {
+        isDown ? (value - valueRange.lowerBound) * scaleFactor + minY : -((value - valueRange.lowerBound) * scaleFactor + minY)
+    }
+    
+    public func setValueRange(_ value: ClosedRange<CGFloat>) {
+        self.valueRange = value
+    }
+    
+    public func setLastCoordinator(_ value: CGFloat) {
+        self.lastCoordinateValue = value
+    }
+    
+    public func getScaleFactor(minY: CGFloat, maxY: CGFloat) -> CGFloat {
+        (maxY - minY) / (valueRange.upperBound - valueRange.lowerBound)
+    }
+    
+    public func updateValue(_ value: CGFloat) {
+        self.value = value
+    }
+}
+
+//MARK: - Update function
+extension VerticalSliderView {
+    internal func updateZoomFactor(sliderValue: CGFloat, dragValue: DragGesture.Value, minY: CGFloat, maxY: CGFloat, scaleFactor: CGFloat) {
+        if (abs(dragValue.translation.height) < 0.1) {
+            setLastCoordinator(sliderValue)
+        }
+        
+        var nextCoordinateValue: CGFloat = 0
+        
+        if dragValue.translation.height > 0 {
+            // drag to down
+            nextCoordinateValue = isDown ? min(maxY, self.lastCoordinateValue + dragValue.translation.height) : max(minY, -(self.lastCoordinateValue + dragValue.translation.height))
+        } else {
+            // drag to up
+            nextCoordinateValue = isDown ? max(minY, self.lastCoordinateValue + dragValue.translation.height) : min(maxY, -(self.lastCoordinateValue + dragValue.translation.height))
+        }
+        
+        updateValue((nextCoordinateValue - minY) / scaleFactor + self.valueRange.lowerBound)
+    }
+}
 
 #Preview {
     @State var valueRange: ClosedRange<CGFloat> = 10...30

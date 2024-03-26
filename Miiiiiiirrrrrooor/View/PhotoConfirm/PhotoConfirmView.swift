@@ -101,7 +101,7 @@ struct PhotoConfirmView: View {
         .background(
             Image(uiImage: photoImage!)
                 .resizable()
-                .aspectRatio(contentMode: .fill)
+                .aspectRatio(contentMode: .fit)
                 .ignoresSafeArea()
         )
         .onDisappear {
