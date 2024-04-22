@@ -1,5 +1,5 @@
 //
-//  MirrorView+Function.swift
+//  MainView+Function.swift
 //  Miiiiiiirrrrrooor
 //
 //  Created by Jinsu Gu on 3/21/24.
@@ -9,10 +9,10 @@ import Foundation
 import SwiftUI
 
 //MARK: - Functions
-extension MirrorView {
+extension MainView {
     internal func showToast(_ text: String, duration: TimeInterval) {
-        toastText = text
-        toastOpacity = 1
+        uiModel.toastText = text
+        uiModel.toastOpacity = 1
         
         if let toastTimer {
             toastTimer.invalidate()
@@ -20,8 +20,8 @@ extension MirrorView {
         }
         
         toastTimer = Timer.scheduledTimer(withTimeInterval: duration, repeats: false) { timer in
-            toastOpacity = 0
-            toastText = ""
+            uiModel.toastOpacity = 0
+            uiModel.toastText = ""
             self.toastTimer = nil
         }
     }

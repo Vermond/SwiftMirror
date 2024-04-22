@@ -9,8 +9,8 @@ import Foundation
 import UIKit
 import PhotosUI
 
-class PhotoController: NSObject {
-    static let shared = PhotoController()
+class PhotoManager: NSObject {
+    static let shared = PhotoManager()
     
     private var onComplete: ((Error?) -> Void)? = nil
     
@@ -22,8 +22,9 @@ class PhotoController: NSObject {
         PHPhotoLibrary.authorizationStatus(for: .addOnly) == .authorized
     }
     
-    func writeToPhotoAlbum(image: UIImage, onComplete: ((Error?) -> Void)? = nil) {
+    func writeToPhotoAlbum(image: CGImage, isFlipped: Bool, onComplete: ((Error?) -> Void)? = nil) {
         self.onComplete = onComplete
+        let image = UIImage(cgImage: image, scale: 1, orientation: isFlipped ? .up : .upMirrored)
         UIImageWriteToSavedPhotosAlbum(image, self, #selector(saveComplete), nil)
     }
     

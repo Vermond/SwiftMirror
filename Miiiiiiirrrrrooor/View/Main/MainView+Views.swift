@@ -1,5 +1,5 @@
 //
-//  MirrorView+CommomItems.swift
+//  MainView+CommomItems.swift
 //  Miiiiiiirrrrrooor
 //
 //  Created by Jinsu Gu on 3/21/24.
@@ -10,10 +10,10 @@ import SwiftUI
 import MessageUI
 
 //MARK: - Info Views
-extension MirrorView {
+extension MainView {
     internal var infoButton: some View {
         Button(action: {
-            isInfoHidden.toggle()
+            uiModel.isInfoHidden.toggle()
         }) {
             Image(systemName: "info.circle.fill")
                 .scaleEffect(2.2)
@@ -40,7 +40,7 @@ extension MirrorView {
                 
                 if MFMailComposeViewController.canSendMail() {
                     Button(action: {
-                        self.isShowingMailView.toggle()
+                        uiModel.isShowingMailView.toggle()
                     }, label: {
                         Text("Mail to me")
                             .frame(maxWidth: maxWidth, alignment: .trailing)
@@ -88,10 +88,10 @@ extension MirrorView {
 }
     
 //MARK: - Zoom Views
-extension MirrorView {
+extension MainView {
     internal var currentZoomButton: some View {
         Button(action: {
-            isZoomHidden.toggle()
+            uiModel.isZoomHidden.toggle()
         }, label: {
             Text("x \(textTheme.numberToString(model.zoomRate))")
                 .scaleEffect(textTheme.textScaleRate)
@@ -120,12 +120,12 @@ extension MirrorView {
 }
 
 //MARK: - Filter views
-extension MirrorView {
+extension MainView {
     internal var filterMainButton: some View {
         Button(action: {
-            isFilterListHidden.toggle()
+            uiModel.isFilterListHidden.toggle()
         }, label: {
-            Image(currentFilter.rawValue)
+            Image(model.filter.rawValue)
                 .resizable()
                 .frame(width: uiTheme.sizeUnit, height: uiTheme.sizeUnit)
         })
@@ -136,7 +136,7 @@ extension MirrorView {
             VStack(spacing: 25) {
                 ForEach(Filters.allCases, id: \.self) { filter in
                     Button(action: {
-                        self.currentFilter = filter
+                        model.filter = filter
                     }, label: {
                         Image(filter.rawValue)
                             .resizable()
@@ -156,10 +156,10 @@ extension MirrorView {
 }
 
 //MARK: - Other views
-extension MirrorView {
+extension MainView {
     internal var takePictureButton: some View {
         Button(action: {
-            isWaitingForCapture = true
+            isPhotoConfirming = true
         }) {
             Circle()
                 .stroke()
@@ -176,7 +176,7 @@ extension MirrorView {
     
     internal var hideUIButton: some View {
         Button(action: {
-            isUIHidden = true
+            uiModel.isUIHidden = true
         }, label: {
             Text("Hide UI")
                 .scaleEffect(textTheme.textScaleRate)
@@ -187,9 +187,9 @@ extension MirrorView {
     }
     
     internal var toastTextView: some View {
-        let opacity = uiTheme.imageButtonOpacity * toastOpacity
+        let opacity = uiTheme.imageButtonOpacity * uiModel.toastOpacity
         
-        return Text(toastText)
+        return Text(uiModel.toastText)
             .foregroundStyle(textTheme.textColor)
             .background(
                 RoundedRectangle(cornerRadius: uiTheme.cornerRadius)
@@ -201,7 +201,7 @@ extension MirrorView {
 }
 
 //MARK: - Commom Views
-extension MirrorView {
+extension MainView {
     internal var mainSquareButton: some View {
         RoundedRectangle(cornerRadius: uiTheme.cornerRadius)
             .stroke()

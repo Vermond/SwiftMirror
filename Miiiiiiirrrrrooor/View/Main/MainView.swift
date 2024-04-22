@@ -8,7 +8,7 @@
 import SwiftUI
 import MessageUI
 
-struct MirrorView: View {
+struct MainView: View {
     internal let mail = "paser2@gmail.com"
     
     //MARK: - Variables
@@ -17,88 +17,78 @@ struct MirrorView: View {
     @EnvironmentObject internal var uiTheme: UITheme
     @EnvironmentObject internal var textTheme: TextTheme
     
-    @ObservedObject internal var model = ViewModel()
+    @StateObject internal var model = ViewModel()
+    @StateObject internal var uiModel = UIModel()
     
-    @State internal var isUIHidden = false
-    @State internal var isInfoHidden = true
     @State internal var result: Result<MFMailComposeResult, Error>? = nil
-    @State internal var isShowingMailView = false
     
-    @State internal var toastText: String = ""
-    @State internal var toastOpacity: CGFloat = 0
     @State internal var toastTimer: Timer?
     
-    @State internal var isZoomHidden = true
-    @State internal var isFilterListHidden = true
-    
-    @State internal var isWaitingForCapture = false
-    
-    @State internal var currentFilter: Filters = .None
-    
-    @State internal var photoImage: UIImage?
     @State internal var isPhotoConfirming = false
-    
-    @State private var viewSize: CGSize = .zero
-    @State private var lastPosition: CGPoint? = nil
-    
-    @State private var lastTranslation: CGSize = .zero
-    @State private var previousZoom: CGFloat = 1.0
-    
+        
     //MARK: - Main View
     var body: some View {
         GeometryReader { geometryReader in
             ZStack {
+                // Camera
+                ZStack() {
+                    FrameView(image: model.frame,
+                              zoomRate: model.zoomRate,
+                              position: model.offset)
+                        .ignoresSafeArea()
+                    ErrorView(error: model.error)
+                }
+                
                 // Common action area
                 Rectangle()
                     .foregroundStyle(Color.clear)
                     .contentShape(Rectangle())
                     .onTapGesture {
-                        if isUIHidden { isUIHidden = false }
+                        if uiModel.isUIHidden { uiModel.isUIHidden = false }
                     }
                     .gesture(
                         DragGesture(minimumDistance: 0)
                             .onChanged { value in
-                                let x = value.translation.width - lastTranslation.width
-                                let y = value.translation.height - lastTranslation.height
+                                let x = value.translation.width - uiModel.lastTranslation.width
+                                let y = value.translation.height - uiModel.lastTranslation.height
                                                                 
-                                model.adjustOffset((x, y))
+                                model.adjustOffset(CGPoint(x: x, y: y))
                                 
-                                self.lastTranslation = value.translation
+                                uiModel.lastTranslation = value.translation
                             }
                             .onEnded { _ in
-                                self.lastTranslation = .zero
+                                uiModel.lastTranslation = .zero
                             }
                     )
                     .gesture(
                         MagnificationGesture()
                             .onChanged { value in
-                                let delta = value / previousZoom
-                                self.previousZoom = value
+                                let delta = value / uiModel.previousZoom
+                                uiModel.previousZoom = value
                                 let newZoom = model.zoomRate * delta
                                 model.setZoomRate(newZoom)
                             }
                             .onEnded { value in
-                                self.previousZoom = 1.0
+                                uiModel.previousZoom = 1.0
                             }
                     )
-                
                 // Main UI
                 VStack() {
-                    if !isUIHidden {
+                    if !uiModel.isUIHidden {
                         HStack() {
                             hideUIButton
                                 .padding(.horizontal, uiTheme.paddingUnit)
                             infoButton
                                 .padding(.horizontal, uiTheme.paddingUnit)
                         }
-                        if !isInfoHidden {
+                        if !uiModel.isInfoHidden {
                             infoView
                         }
                         
                         Spacer() //blank space
                         
                         ZStack() {
-                            if !isZoomHidden {
+                            if !uiModel.isZoomHidden {
                                 zoomChangeView
                                     .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomLeading)
                             }
@@ -106,7 +96,7 @@ struct MirrorView: View {
                                 .frame(maxHeight: .infinity, alignment: .bottom)
                                 .padding(.bottom, uiTheme.paddingUnit)
                             
-                            if !isFilterListHidden {
+                            if !uiModel.isFilterListHidden {
                                 filterSelectList
                                     .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .trailing)
                             }
@@ -127,18 +117,8 @@ struct MirrorView: View {
                     }
                 }
             }
-            .background(
-                VStack() {
-                    CameraPreviewRepresentable(model: self.model,
-                                               viewSize: $viewSize,
-                                               isWaitingForCapture: $isWaitingForCapture,
-                                               photoImage: $photoImage,
-                                               currentFilter: $currentFilter)
-                }
-                    .ignoresSafeArea()
-            )
-            .sheet(isPresented: $isShowingMailView) {
-                MailView(isShowing: self.$isShowingMailView,
+            .sheet(isPresented: $uiModel.isShowingMailView) {
+                MailView(isShowing: $uiModel.isShowingMailView,
                          result: self.$result,
                          targetMail: mail)
             }
@@ -161,13 +141,11 @@ struct MirrorView: View {
                 textTheme.textButtonOpacity = 0.1
                 textTheme.textAreaOpacity = isDark ? 0.25 : 0.1
                 
-                self.viewSize = geometryReader.size
-            }
-            .onChange(of: isWaitingForCapture) { isWaiting in
-                isPhotoConfirming = !isWaiting && photoImage != nil
+                model.viewSize = geometryReader.size
+                uiModel.viewSize = geometryReader.size
             }
             .fullScreenCover(isPresented: $isPhotoConfirming) {
-                PhotoConfirmView(photoImage: $photoImage)
+                PhotoConfirmView(photoImage: model.frame)
             }
         }
     }
@@ -179,7 +157,7 @@ struct MirrorView: View {
     let uiTheme = ThemePreview.WhitePreview.uiTheme
     let textTheme = ThemePreview.WhitePreview.textTheme
     
-    return MirrorView()
+    return MainView()
         .environmentObject(uiTheme)
         .environmentObject(textTheme)
 }

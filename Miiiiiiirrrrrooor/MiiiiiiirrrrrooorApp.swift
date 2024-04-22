@@ -14,7 +14,7 @@ struct MiiiiiiirrrrrooorApp: App {
     
     var body: some Scene {
         WindowGroup {
-            MirrorView()
+            MainView()
                 .environmentObject(uiTheme)
                 .environmentObject(textTheme)
         }
