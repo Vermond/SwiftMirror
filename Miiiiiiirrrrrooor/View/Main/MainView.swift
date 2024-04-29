@@ -76,28 +76,30 @@ struct MainView: View {
                 VStack() {
                     if !uiModel.isUIHidden {
                         HStack() {
-                            hideUIButton
+                            HideUIButton(isUIHidden: $uiModel.isUIHidden)
                                 .padding(.horizontal, uiTheme.paddingUnit)
-                            infoButton
+                            InfoButton(infoToggle: $uiModel.isInfoHidden)
                                 .padding(.horizontal, uiTheme.paddingUnit)
                         }
                         if !uiModel.isInfoHidden {
-                            infoView
+                            InfoView(mail: mail, mailToggle: $uiModel.isShowingMailView)
                         }
                         
                         Spacer() //blank space
                         
                         ZStack() {
                             if !uiModel.isZoomHidden {
-                                zoomChangeView
-                                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomLeading)
+                                ZoomChangeView(zoomRate: model.zoomRateBinding, zoomRange: model.zoomRange) { rate in
+                                    model.setZoomRate(rate)
+                                }
+                                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomLeading)
                             }
-                            toastTextView
+                            AlertView(toastText: uiModel.toastText, opacity: uiTheme.imageButtonOpacity * uiModel.toastOpacity)
                                 .frame(maxHeight: .infinity, alignment: .bottom)
                                 .padding(.bottom, uiTheme.paddingUnit)
                             
                             if !uiModel.isFilterListHidden {
-                                filterSelectList
+                                FilterSelectList(filter: $model.filter)
                                     .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .trailing)
                             }
                         }
@@ -105,12 +107,13 @@ struct MainView: View {
                         .padding(uiTheme.paddingUnit)
                         
                         HStack() {
-                            currentZoomButton
+                            CurrentZoomButton(isZoomHidden: $uiModel.isZoomHidden, zoomRate: model.zoomRate)
                                 .frame(maxWidth: 100)
                             Spacer()
-                            takePictureButton
+                            TakePictureButton(isPhotoConfirming: $isPhotoConfirming)
                             Spacer()
-                            filterMainButton
+                            FilterMainButton(isFilterListHidden: $uiModel.isFilterListHidden,
+                                             filter: $model.filter)
                                 .frame(maxWidth: 100)
                         }
                         .padding(.horizontal, uiTheme.paddingUnit)
